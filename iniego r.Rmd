@@ -1,0 +1,538 @@
+---
+title: "Untitled"
+author: "Iniego, Muffet R."
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+---
+title: "The Basics of R"
+author: "Kyla Ayop"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+# Basics of R
+
+* It is completely free and open source
+* It is faster and more efficient with memory
+* It facilitates easier replication of analysis
+* It has a large and growing global community of active users
+
+## How to start using R
+Rstudio is an IDE *Integrated Development Environment* that is most popular for R
+
+## DATA IN R
+Simple calculations can be done easily but R does not store result
+
+* To store something in R session, assign it a name using the ( <- ) operator
+* To display value, use print() command given that name of the object must be inside
+* To see type of single scalar value, use typeof() function
+* To display both the contents of the vector and its type,  use str() function
+  
+  
+## **CODE SNIPPETS**
+
+### Store result
+
+my_sum <- 3+3
+
+my_sum +3
+
+[1] 9
+
+### Define a value to an object r does not show the result
+
+my_sum
+
+(another_sum <- my_sum +3)
+
+[1] 9
+
+
+***To explore data types in r,define integer in R***
+
+### Integers can be signified by adding an 'L' o the end
+
+my_integer <- 1L
+
+my_double <- 6.38
+
+typeof(my_integer)
+
+[1] "integer"
+
+typeof(my_double)
+
+[1] "double"
+
+
+### Show how to assign character object 
+
+my_character <- "THIS IS TEXT"
+
+typeof(my_character)
+
+[1] "character"
+
+## LOGICAL DATA - logical object values are either true or false
+
+my_logical <- TRUE
+
+typeof(my_logical)
+
+
+#HOMOGENOUS VECTORS
+
+## VECTORS - define a vector object use command c(), shows the type of vector, index and its elements
+
+my_double_vector <- c(2.3, 6.8, 4.5, 65, 6)
+
+str(my_double_vector)
+
+
+### Categorical data, vector and factor type
+
+categories <- factor(c("A", "B", "C", "A", "C"))
+
+str(categories)
+
+categories_char <- c("A", "B", "C", "A", "C")
+
+str(categories_char)
+
+
+### Ordered factor vector use command ordered, with character vector and its level
+
+ranking <- c("Medium", "High", "Low")
+
+str(ranking)
+
+ranking_factors <- ordered(ranking, levels = c("Low","Medium" , "High"))
+
+str(ranking_factors)
+
+
+### For any vector you want to find the number of elements length()
+
+length(categories)
+
+
+### Create a seq of numbers we use this notation, useful when doing simulations
+
+(my_sequence <- 1:10)
+
+(my_sequence_two <- seq(from = 1, to = 10, by = 5))
+
+
+### Demonstrates type coercion occurs to have a homogenous type since vectors are 
+
+#Numeric vector
+
+vec <- 1:5
+
+str(vec)
+
+
+#Create a new vector containing vec and the character hello
+
+new_vec <- c(vec, "hello")
+
+
+#Numeric values have been coerced into their character equivalents
+
+str(new_vec)
+
+
+### Another type of coercion a mixed logical ang numeric
+
+mix <- c( TRUE, 6)
+
+
+#A logical has been converted to binary numeric true=1
+
+str(mix)
+
+new_categories <- c(categories, 1)
+
+str(new_categories)
+
+
+### Define a matrix, thus recycles elements when number of columns does not coincide
+
+(m <- matrix(c(1,2,3,4), nrow = 2, ncol = 2))
+
+(m <- matrix(vec, nrow=5,ncol=2))
+
+
+### Vectors do not allow different type of elements however, list allow different types of elements
+
+my_list <- list(6, TRUE, "hello")
+
+str(my_list)
+
+//
+
+new_list <- list(
+  scalar = 6, vector = c("Hello", "Goodbye"), matrix= matrix(1:4, nrow=2,ncol=2))
+  
+str(new_list)
+
+new_list$matrix
+
+new_list$vec
+
+new_list[[2]]
+
+
+
+## DATAFRAMES - most used data structure in R/ spreadsheets
+
+### to create a dataframe
+
+names <- c("John", "Ayesha")
+
+ages <- c(31, 24)
+
+
+### create a dataframe, get the type of columns and the dimensions of df
+
+(df <- data.frame(names, ages))
+
+str(df)
+
+dim(df)
+
+
+## Working with dataframes
+
+data() to access data sets in R
+
+
+## Import data int R 
+
+url <- "https://raw.githubusercontent.com/msuiitdmsgabriel/datasets-regression/main/salespeople.csv"
+
+salespeople <- read.csv(url)
+
+
+### Display dimensions of dataframes (rows and columns), head displays first few rows
+
+dim(salespeople)
+
+head(salespeople)
+
+
+### View specific entry of a column 
+
+salespeople$sales[6]
+
+
+### Use a [row, column] index to get specific entry i the dataframe
+
+salespeople[34,4]
+
+str(salespeople)
+
+
+### Statistical summary 
+
+summary(salespeople)
+
+
+### is.na function return true or false based on NA values in a dataframe
+
+is.na(salespeople)
+
+sum(is.na(salespeople))
+
+
+### Remove rows with NA
+
+#### Tells if particular row if complete or not
+
+complete.cases(salespeople) 
+
+salespeople[complete.cases(salespeople),] 
+
+
+#### Overwrite the dataframe creating a new fame with complete values
+
+salespeople <- salespeople[complete.cases(salespeople),] 
+
+sum(is.na(salespeople))
+
+
+### Unique values of a vector or column
+
+unique(salespeople$performance)
+
+
+### Take a look on entire column
+
+salespeople$performance
+
+
+### change of type of column
+
+#### Get vector and convert into factor 
+
+as.factor(salespeople$performance)
+
+salespeople$performance <- as.factor(salespeople$performance)
+
+str(salespeople)
+
+
+## Manipulating dataframes
+
+### Subset command
+
+(sales_720 <- subset(salespeople, subset = sales == 720))
+
+      promoted sales customer_rate performance
+      
+290        1   720          3.76           3
+
+
+#### == To test for precise equality
+
+
+####  Other inequalities used
+
+high_sales <- subset(salespeople, subset =sales >= 700)
+
+head(high_sales)
+
+promoted sales customer_rate performance
+
+6         1   918          4.54           2
+
+12        1   716          3.16           3
+
+20        1   937          5.00           2
+
+21        1   702          3.53           4
+
+25        1   819          4.45           2
+
+26        1   736          3.94           4
+
+//
+march 30
+
+url <- "https://raw.githubusercontent.com/msuiitdmsgabriel/datasets-regression/main/salespeople.csv"
+
+salespeople <- read.csv(url)
+
+salespeople <- salespeople[complete.cases(salespeople),] 
+
+high_sales <- subset(salespeople, subset =sales >= 700)
+
+//
+
+salespeople_sales_perf <- subset(salespeople, select = c("sales", "performance"))
+
+head(salespeople_sales_perf)
+
+  sales performance
+  
+1   594           2
+
+2   446           3
+
+3   674           4
+
+4   525           2
+
+5   657           3
+
+6   918           2
+
+//
+low_sales <- subset(salespeople, subset = sales < 400)
+
+low_and_high_sales = rbind(low_sales, high_sales)
+
+head(low_and_high_sales)
+
+    promoted sales customer_rate performance
+7         0   318          3.09           3
+
+8         0   364          4.89           1
+
+9         0   342          3.74           3
+
+10        0   387          3.00           3
+
+15        0   344          3.02           2
+
+16        0   372          3.87           3
+
+
+## Combining two dataframes of two different names by its column, c bind function
+
+sales_perf <- subset(salespeople, select = c("sales", "performance"))
+
+prom_custrate <- subset(salespeople, select = c("promoted", "customer_rate" ))
+
+full_df <- cbind(sales_perf, prom_custrate)
+
+head(full_df)
+
+  sales performance promoted customer_rate
+  
+1   594           2        0          3.94
+
+2   446           3        0          4.06
+
+3   674           4        1          3.83
+
+4   525           2        0          3.62
+
+5   657           3        1          4.40
+
+6   918           2        1          4.54
+
+
+
+## Using Functions
+
+
+Head function 
+
+head(required argment, optional argument)
+
+head(x = salespeople)
+
+  promoted sales customer_rate performance
+  
+1        0   594          3.94           2
+
+2        0   446          4.06           3
+
+3        1   674          3.83           4
+
+4        0   525          3.62           2
+
+5        1   657          4.40           3
+
+6        1   918          4.54           2
+
+head(x = salespeople, n=4)
+
+  promoted sales customer_rate performance
+  
+1        0   594          3.94           2
+
+2        0   446          4.06           3
+
+3        1   674          3.83           4
+
+4        0   525          3.62           2
+
+ head(salespeople, 6)
+ 
+  promoted sales customer_rate performance
+  
+1        0   594          3.94           2
+
+2        0   446          4.06           3
+
+3        1   674          3.83           4
+
+4        0   525          3.62           2
+
+5        1   657          4.40           3
+
+6        1   918          4.54           2
+
+head(salespeople, 3)
+
+    promoted sales customer_rate performance
+    
+1        0   594          3.94           2
+
+2        0   446          4.06           3
+
+3        1   674          3.83           4
+ 
+head(n=3, x = salespeople)
+
+  promoted sales customer_rate performance
+  
+1        0   594          3.94           2
+
+2        0   446          4.06           3
+
+3        1   674          3.83           4
+
+
+***Display help page in browser***
+
+?head
+
+help(head)
+
+###Help page shows
+
+description of the purpose of the function
+
+##writing functions in R
+
+functions are not limited, thus one can write functions
+
+DRY Do not Repeat Yourself Principle
+
+## A simple function written which generates a report on a dataframe
+
+df_report function
+
+df_report <- function(df) {paste( "This dataframe contains", nrow(df), "rows and", ncol(df), "columns. There are", sum(is.na(df)), "NA entries.")}
+
+ df_report(mtcars)
+ 
+[1] "This dataframe contains 32 rows and 11 columns. \n    There are 0 NA entries."
+
+### Paste function compiles two or many strigs into a single string
+
+paste("This is how the paste"," function works")
+
+[1] "This is how the paste  function works"
+
+## Installing Packages
+
+MASS package
+install.packages() using this command to install packages
+
+install more than oe package define it as a vector
+
+my_packages <- c("DescTools", "dplyr")
+install.packages(my_packages)
+
+see what functions are available in package use help(package = "MASS")
+to use functions upload to r session use library(MASS) 
+
+functions 'belong' to package
+
+As an example
+
+sales <- subset(salespeople, subset = sales < 500)
+
+subset(salespeople$sales, subset = salespeople$sales < 500)
+
+mean(sales$sales)
+
+*
+mean(subset(salespeople, subset = sales < 500)$sales)
+
+subset(salespeople$sales, subset = salespeople$sales < 500)
+%>% mean()
+
+*
+round(mean(subset(salespeople, subset = sales < 500)$sales))
+
+subset(salespeople$sales, subset = salespeople$sales < 500)
+%>% mean() %>% round()
+
+subset(salespeople, subset = sales = 720)
+
